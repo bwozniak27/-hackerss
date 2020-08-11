@@ -35,6 +35,12 @@ void cyphers(int choice, int choice2);
 
 bool isASentence(std::vector<std::string> sentence);
 
+bool same_strings(std::string word1, std::string word2);
+
+bool find_word(std::string word, const std::vector<std::string> &valid_words);
+
+std::vector<std::string> read_words_from_file(const std::string &filename);
+
 
 
 

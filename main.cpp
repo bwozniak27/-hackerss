@@ -73,10 +73,9 @@ void cyphers(int choice, int choice2) {
             fin.open("ceasarcypher.txt");
             cout << "Ceasar Cypher Decryptor" << endl;
             getline(fin, input, '.');
-            cout << "Decrypted sentences: " << endl;
             string input2 = ceasarCypherEncryptor(input);
-            cout << "sentence: " << input2 << "." << endl;
-            ceasarCypherDecryptor(input2);
+            cout << "Encrypted Sentence: " << input2 << "." << endl;
+            sentenceGenerator(input2);
             fin.close();
         }
     }

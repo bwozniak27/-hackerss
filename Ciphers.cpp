@@ -60,10 +60,8 @@ string ceasarCypherEncryptor(string input) {
         int indicy = findTheLetter(l) + num;
         if (l == ' ') {
             sentence += " ";
-        } else if (indicy > alphabet.length()) {
-            sentence += alphabet[indicy - 25];
         } else {
-            sentence += alphabet[indicy];
+            sentence += alphabet[indicy % 26];
         }
     }
     return sentence;
@@ -79,11 +77,11 @@ void ceasarCypherDecryptor(string input, int key) {
     string alphabet = "abcdefghijklmnopqrstuvwxyz";
     string word;
     vector<string> sentence = {};
-    for (size_t j = 0; j < input.size(); j++) {
+    for (size_t j = 0; j < input.length(); j++) {
         size_t count = j;
         string word = "";
         if (input[count - 1] == ' ' || count == 0) {
-            while (input[count] != ' ' && input[count] != '.') {
+            while (input[count] != ' ' && count < input.length()) {
                 char l = tolower(input[count]);
                 int indicy = findTheLetter(l) - key;
                 if (indicy < 0) {
@@ -94,13 +92,14 @@ void ceasarCypherDecryptor(string input, int key) {
                 count++;
             }
             sentence.push_back(word);
+        } else {
         }
     }
     cout << key << ". ";
     for (size_t i = 0; i < sentence.size(); i++) {
         cout << sentence[i] << " ";
     }
-    cout << "." << endl;
+    cout << endl;
     if (isASentence(sentence)) {
         cout << endl << "FOUND THE KEY (" << key << ")" << endl;
     }
@@ -127,17 +126,58 @@ void menu2(int &choice2) {
 
 int findTheLetter(char letter) {
     string alphabet = "abcdefghijklmnopqrstuvwxyz";
-    int numLetter = 0;
     for (int i = 0; i < alphabet.length(); i++) {
         if (alphabet[i] == letter) {
-            numLetter = i;
+            return i;
         }
     }
-    return numLetter;
+    return 0;
 }
 
 bool isASentence(vector<string> sentence) {
+    for (auto i:sentence) {
+        if (!find_word(i, read_words_from_file("words.txt"))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+vector<string> read_words_from_file(const string &filename) {
+    vector<string> words;
+    ifstream fin;
+    fin.open(filename);
+    if (!fin.is_open()) {
+        cout << "ERROR" << endl;
+    }
+    string tempWord = "";
+    while (!fin.eof()) {
+        fin >> tempWord;
+        words.push_back(tempWord);
+        tempWord = "";
+    }
     
-    
+    return words;
+}
+
+bool find_word(string word, const vector<string> &valid_words) {
+    for (size_t i = 0; i < valid_words.size(); i++) {
+        if (same_strings(word, valid_words[i])) {
+            return true;
+        }
+    }
     return false;
+}
+
+bool same_strings(string word1, string word2) {
+    if (word1.length() == word2.length()) {
+        for (int i = 0; i < word1.length(); i++) {
+            if (word1[i] != word2[i]) {
+                return false;
+            }
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
